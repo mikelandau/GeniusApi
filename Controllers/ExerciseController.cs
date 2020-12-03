@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GeniusApi.Models;
+using GeniusApi.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,36 +13,25 @@ namespace GeniusApi.Controllers
     [ApiController]
     public class ExerciseController : ControllerBase
     {
+        private readonly IExerciseRepository _exerciseRepository;
+
+        public ExerciseController(IExerciseRepository exerciseRepository)
+        {
+            _exerciseRepository = exerciseRepository;
+        }
+
         // GET: api/Exercise
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Exercise> Get()
         {
-            return new string[] { "value1", "value2" };
+            return _exerciseRepository.GetAll();
         }
 
         // GET: api/Exercise/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public Exercise Get(string id)
         {
-            return "value";
-        }
-
-        // POST: api/Exercise
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT: api/Exercise/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/Exercise/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return _exerciseRepository.GetById(id);
         }
     }
 }

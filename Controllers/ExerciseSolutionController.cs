@@ -14,8 +14,13 @@ namespace GeniusApi.Controllers
     {
         // POST: api/ExerciseSolution
         [HttpPost]
-        public void Post([FromBody] ExerciseSolution exerciseSolution)
+        public ExerciseResult Post([FromBody] ExerciseSolution exerciseSolution)
         {
-        }
+
+            return new ExerciseResult {
+                Success = true,
+                Message = "Success! You've completed the exercise."
+            };
+          }
     }
 }

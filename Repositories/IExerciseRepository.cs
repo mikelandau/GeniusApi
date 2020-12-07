@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using GeniusApi.Models;
 
 namespace GeniusApi.Repositories
 {
     public interface IExerciseRepository
     {
-        IEnumerable<Exercise> GetAll();
-        Exercise GetById(string id);
+        Task<IEnumerable<Exercise>> GetAll();
+        Task<Exercise> GetById(string id);
     }
 }

@@ -22,16 +22,16 @@ namespace GeniusApi.Controllers
 
         // GET: api/Exercise
         [HttpGet]
-        public IEnumerable<Exercise> Get()
+        public async Task<IEnumerable<Exercise>> Get()
         {
-            return _exerciseRepository.GetAll();
+            return await _exerciseRepository.GetAll();
         }
 
         // GET: api/Exercise/5
         [HttpGet("{id}", Name = "Get")]
-        public Exercise Get(string id)
+        public async Task<Exercise> Get(string id)
         {
-            return _exerciseRepository.GetById(id);
+            return await _exerciseRepository.GetById(id);
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Docker.DotNet;
 using Docker.DotNet.Models;
@@ -17,7 +18,7 @@ namespace GeniusApi.TestRunners
             _dockerClient = dockerClient;
         }
 
-        private async Task StartContainer()
+        private async Task<CreateContainerResponse> StartContainer()
         {
             var createContainerParameters = new CreateContainerParameters 
             {
@@ -39,12 +40,26 @@ namespace GeniusApi.TestRunners
                 }
             };
 
-            var response = await _dockerClient.Containers.CreateContainerAsync(createContainerParameters);
+            return await _dockerClient.Containers.CreateContainerAsync(createContainerParameters);
         }
 
         public async Task<ExerciseResult> Run(ExerciseSolution userSolution)
         {
-            return null;
+            var container = await StartContainer();
+            var stream = await _dockerClient.Containers.AttachContainerAsync(container.ID, false, new ContainerAttachParameters {
+                Stdin = true,
+                Stdout = true,
+                Stderr = true
+            });
+            var output = await stream.ReadOutputToEndAsync(new CancellationToken());
+            Console.Write(output.stdout);
+            await _dockerClient.Containers.StopContainerAsync(container.ID, new ContainerStopParameters());
+
+            return new ExerciseResult
+            {
+                Message = "It worked I think",
+                Success = true
+            };
         }
     }
 }

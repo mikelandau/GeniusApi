@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -51,6 +52,7 @@ namespace GeniusApi.TestRunners
                 Stdout = true,
                 Stderr = true
             });
+
             var output = await stream.ReadOutputToEndAsync(new CancellationToken());
             Console.Write(output.stdout);
             await _dockerClient.Containers.StopContainerAsync(container.ID, new ContainerStopParameters());
